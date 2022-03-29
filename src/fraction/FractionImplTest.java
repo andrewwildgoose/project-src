@@ -3,10 +3,12 @@ package fraction;
 import fraction.FractionImpl.*;
 import org.junit.Test;
 import org.junit.Assert.*;
+import org.junit.jupiter.api.function.Executable;
 
 import static fraction.FractionImpl.getGCD;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class FractionImplTest {
 
@@ -26,5 +28,13 @@ public class FractionImplTest {
     public void testFraction1(){
         Fraction frac1 = new FractionImpl(1,0);
     }
-
+    @Test (expected = NumberFormatException.class) // Tests the third constructor will return an ArithmeticException when provided with too many numeric values.
+    public void testFraction3() {
+        Fraction frac3 = new FractionImpl( "1 0 / -4" );
+    }
+    @Test
+    public void testFraction4() {
+        FractionImpl frac4;
+        assertDoesNotThrow((Executable) (frac4 = new FractionImpl("10 / -4")));
+    }
 }

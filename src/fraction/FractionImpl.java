@@ -1,5 +1,8 @@
 package fraction;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FractionImpl implements Fraction {
     /**
      * Parameters are the <em>numerator</em> and the <em>denominator</em>.
@@ -18,13 +21,11 @@ public class FractionImpl implements Fraction {
 
     public FractionImpl(int numerator, int denominator) throws ArithmeticException {
         if (denominator == 0){
-            throw new ArithmeticException();
+            throw new ArithmeticException("divide by zero");
         }
         int GCD = getGCD(numerator, denominator);
         this.numerator = numerator/GCD;
         this.denominator = denominator/GCD;
-
-        // TODO
     }
 
     /**
@@ -36,7 +37,6 @@ public class FractionImpl implements Fraction {
 
         this.numerator = wholeNumber;
         this.denominator = 1;
-        // TODO
     }
 
     /**
@@ -50,8 +50,17 @@ public class FractionImpl implements Fraction {
      *
      * @param fraction the string representation of the fraction
      */
-    public FractionImpl(String fraction) {
-        // TODO
+    public FractionImpl(String fraction) throws NumberFormatException {
+
+        String str = fraction.replaceAll("[^-?0-9]+", " "); // replaces all non numeric characters (and "-" signs) in the string with a space.
+        List nums = Arrays.asList(str.trim().split(" ")); // splits the new numeric string to a List
+
+        if (nums.size() > 2) { // throws an exception if too many numbers have been found.
+            throw new NumberFormatException("too many numbers");
+        }
+        this.numerator = (Integer) nums.get(0);
+        this.denominator = (Integer) nums.get(1);
+            // TODO
     }
 
     // method used to find the greatest common divisor which will be used to normalise the fraction.
@@ -65,7 +74,14 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction add(Fraction f) {
-        return null;
+        FractionImpl addMe = new FractionImpl(f.toString());
+
+        int a = this.numerator;
+        int b = this.denominator;
+        int c = addMe.numerator;
+        int d = addMe.denominator;
+
+        return new FractionImpl((a*d + b*c), b*d);
     }
 
     /**
