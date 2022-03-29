@@ -16,10 +16,13 @@ public class FractionImpl implements Fraction {
     private int numerator;
     private int denominator;
 
-    public FractionImpl(int numerator, int denominator) {
-
-        this.numerator = numerator;
-        this.denominator = denominator;
+    public FractionImpl(int numerator, int denominator) throws ArithmeticException {
+        if (denominator == 0){
+            throw new ArithmeticException();
+        }
+        int GCD = getGCD(numerator, denominator);
+        this.numerator = numerator/GCD;
+        this.denominator = denominator/GCD;
 
         // TODO
     }
@@ -31,7 +34,7 @@ public class FractionImpl implements Fraction {
      */
     public FractionImpl(int wholeNumber) {
 
-        this.numerator = numerator;
+        this.numerator = wholeNumber;
         this.denominator = 1;
         // TODO
     }
@@ -49,6 +52,12 @@ public class FractionImpl implements Fraction {
      */
     public FractionImpl(String fraction) {
         // TODO
+    }
+
+    // method used to find the greatest common divisor which will be used to normalise the fraction.
+    public static int getGCD(int numerator, int denominator){
+        if (denominator==0) return numerator;
+        return getGCD(denominator,numerator%denominator);
     }
 
     /**
