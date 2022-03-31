@@ -23,9 +23,17 @@ public class FractionImpl implements Fraction {
         if (denominator == 0){
             throw new ArithmeticException("divide by zero");
         }
+
         int GCD = getGCD(numerator, denominator);
-        this.numerator = numerator/GCD;
-        this.denominator = denominator/GCD;
+
+        if (denominator < 0){
+            this.numerator = numerator/(GCD*-1);
+            this.denominator = denominator/(GCD*-1);
+        }
+        else{
+            this.numerator = numerator/GCD;
+            this.denominator = denominator/GCD;
+        }
     }
 
     /**
@@ -53,19 +61,25 @@ public class FractionImpl implements Fraction {
     public FractionImpl(String fraction) throws NumberFormatException {
 
         String str = fraction.replaceAll("[^-?0-9]+", " "); // replaces all non numeric characters (and "-" signs) in the string with a space.
-        List nums = Arrays.asList(str.trim().split(" ")); // splits the new numeric string to a List
+        List<String> nums = Arrays.asList(str.trim().split(" ")); // splits the new numeric string to a List
 
         if (nums.size() > 2) { // throws an exception if too many numbers have been found.
             throw new NumberFormatException("too many numbers");
         }
-        this.numerator = (Integer) nums.get(0);
-        this.denominator = (Integer) nums.get(1);
-            // TODO
+        if (nums.size() == 2) {
+            this.numerator = Integer.parseInt(nums.get(0));
+            this.denominator = Integer.parseInt(nums.get(1));
+        }
+        if (nums.size() == 1) {
+            this.numerator = Integer.parseInt(nums.get(0));
+            this.denominator = 1;
+        }
+
     }
 
     // method used to find the greatest common divisor which will be used to normalise the fraction.
     public static int getGCD(int numerator, int denominator){
-        if (denominator==0) return numerator;
+        if (denominator==0) return Math.abs(numerator);
         return getGCD(denominator,numerator%denominator);
     }
 
@@ -76,10 +90,8 @@ public class FractionImpl implements Fraction {
     public Fraction add(Fraction f) {
         FractionImpl addMe = new FractionImpl(f.toString());
 
-        int a = this.numerator;
-        int b = this.denominator;
-        int c = addMe.numerator;
-        int d = addMe.denominator;
+        int a = this.numerator; int b = this.denominator;
+        int c = addMe.numerator; int d = addMe.denominator;
 
         return new FractionImpl((a*d + b*c), b*d);
     }
@@ -89,7 +101,12 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction subtract(Fraction f) {
-        return null;
+        FractionImpl takeMe = new FractionImpl(f.toString());
+
+        int a = this.numerator; int b = this.denominator;
+        int c = takeMe.numerator; int d = takeMe.denominator;
+
+        return new FractionImpl((a*d - b*c), b*d);
     }
 
     /**
@@ -97,7 +114,12 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction multiply(Fraction f) {
-        return null;
+        FractionImpl multMe = new FractionImpl(f.toString());
+
+        int a = this.numerator; int b = this.denominator;
+        int c = multMe.numerator; int d = multMe.denominator;
+
+        return new FractionImpl((a*c),(b*d));
     }
 
     /**
@@ -105,7 +127,12 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction divide(Fraction f) {
-        return null;
+        FractionImpl divMe = new FractionImpl(f.toString());
+
+        int a = this.numerator; int b = this.denominator;
+        int c = divMe.numerator; int d = divMe.denominator;
+
+        return new FractionImpl((a*d),(b*c));
     }
 
     /**
@@ -169,6 +196,24 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public String toString() {
-        return null;
+        String numeratorStr = String.valueOf(numerator);
+        String denominatorStr = String.valueOf(denominator);
+
+        if (this.denominator == 1){
+            return numeratorStr;
+        }
+        else if (this.numerator == 0){
+            return numeratorStr;
+        }
+        else {
+            return numeratorStr + "/" + denominatorStr;
+        }
     }
+
+//    public static void main(String[] args) {
+//        Fraction multFrac3 = new FractionImpl(-1,2);
+//        Fraction multFrac4 = new FractionImpl(1,2);
+//        Fraction multResult2 = multFrac3.multiply(multFrac4);
+//        System.out.println(multResult2.toString());
+//    }
 }
