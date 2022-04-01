@@ -1,12 +1,8 @@
 package fraction;
 
-import fraction.FractionImpl.*;
 import org.junit.Test;
-import org.junit.Assert.*;
-import org.junit.jupiter.api.function.Executable;
 
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class FractionImplTest {
 
@@ -64,6 +60,11 @@ public class FractionImplTest {
     public void testToString8() { // Testing the third constructor with a fraction that results in 0
         Fraction toStringFrac8 = new FractionImpl("0/5");
         assertEquals(toStringFrac8.toString(), "0");
+    }
+    @Test
+    public void testToString9() { // Testing the second constructor with a fraction that results in 0
+        Fraction toStringFrac9 = new FractionImpl(0);
+        assertEquals(toStringFrac9.toString(), "0");
     }
 
     // Tests for the add method
@@ -289,5 +290,50 @@ public class FractionImplTest {
         Fraction eqlFrac1 = new FractionImpl(3, 4);
         Fraction eqlFrac2 = new FractionImpl(3, 4);
         assertTrue(eqlFrac1.equals(eqlFrac2));
+    }
+    @Test
+    public void testEquals2() { // Testing simple fraction inequality
+        Fraction eqlFrac3 = new FractionImpl(3, 4);
+        Fraction eqlFrac4 = new FractionImpl(1, 2);
+        assertFalse(eqlFrac3.equals(eqlFrac4));
+    }
+    @Test
+    public void testEquals3() { // Testing simple fraction inequality with negative fraction
+        Fraction eqlFrac5 = new FractionImpl(3, 4);
+        Fraction eqlFrac6 = new FractionImpl(-3, 4);
+        assertFalse(eqlFrac5.equals(eqlFrac6));
+    }
+    @Test
+    public void testEquals4() { // Testing simple fraction inequality with non fraction object
+        Fraction eqlFrac7 = new FractionImpl(3, 4);
+        int notFrac = 1;
+        assertFalse(eqlFrac7.equals(notFrac));
+    }
+
+    // Tests for compareTo method
+
+    @Test
+    public void testCompareTo1() { // Testing fraction comparison resulting in equality
+        Fraction compFrac1 = new FractionImpl(3, 4);
+        Fraction compFrac2 = new FractionImpl(3, 4);
+        assertEquals(compFrac1.compareTo(compFrac2), 0);
+    }
+    @Test
+    public void testCompareTo2() { // Testing fraction comparison resulting in greater
+        Fraction compFrac3 = new FractionImpl(3, 4);
+        Fraction compFrac4 = new FractionImpl(1, 2);
+        assertEquals(compFrac3.compareTo(compFrac4), 1);
+    }
+    @Test
+    public void testCompareTo3() { // Testing fraction comparison resulting in lesser
+        Fraction compFrac5 = new FractionImpl(1, 2);
+        Fraction compFrac6 = new FractionImpl(3, 4);
+        assertEquals(compFrac5.compareTo(compFrac6), -1);
+    }
+    @Test
+    public void testCompareTo4() { // Testing fraction comparison resulting in greater due to negative comparator
+        Fraction compFrac7 = new FractionImpl(1, 2);
+        Fraction compFrac8 = new FractionImpl(-3, 4);
+        assertEquals(compFrac7.compareTo(compFrac8), 1);
     }
 }

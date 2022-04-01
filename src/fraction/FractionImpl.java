@@ -80,12 +80,10 @@ public class FractionImpl implements Fraction {
         int GCD = getGCD(numerator, denominator);
 
         if (denominator < 0){
-            this.numerator = numerator/(GCD*-1);
-            this.denominator = denominator/(GCD*-1);
+            this.numerator = numerator/(GCD*-1); this.denominator = denominator/(GCD*-1);
         }
         else{
-            this.numerator = numerator/GCD;
-            this.denominator = denominator/GCD;
+            this.numerator = numerator/GCD; this.denominator = denominator/GCD;
         }
     }
 
@@ -95,7 +93,6 @@ public class FractionImpl implements Fraction {
     @Override
     public Fraction add(Fraction f) {
         FractionImpl addMe = new FractionImpl(f.toString());
-
         int a = this.numerator; int b = this.denominator;
         int c = addMe.numerator; int d = addMe.denominator;
 
@@ -108,7 +105,6 @@ public class FractionImpl implements Fraction {
     @Override
     public Fraction subtract(Fraction f) {
         FractionImpl takeMe = new FractionImpl(f.toString());
-
         int a = this.numerator; int b = this.denominator;
         int c = takeMe.numerator; int d = takeMe.denominator;
 
@@ -121,7 +117,6 @@ public class FractionImpl implements Fraction {
     @Override
     public Fraction multiply(Fraction f) {
         FractionImpl multMe = new FractionImpl(f.toString());
-
         int a = this.numerator; int b = this.denominator;
         int c = multMe.numerator; int d = multMe.denominator;
 
@@ -134,7 +129,6 @@ public class FractionImpl implements Fraction {
     @Override
     public Fraction divide(Fraction f) {
         FractionImpl divMe = new FractionImpl(f.toString());
-
         int a = this.numerator; int b = this.denominator;
         int c = divMe.numerator; int d = divMe.denominator;
 
@@ -174,7 +168,10 @@ public class FractionImpl implements Fraction {
     public boolean equals(Object obj) {
         boolean answer = false;
         if (obj instanceof Fraction f){
-            answer = super.equals(f);
+            FractionImpl eqlMe = new FractionImpl(f.toString());
+            if (this.numerator == eqlMe.numerator && this.denominator == eqlMe.denominator){
+                answer = true;
+            }
         }
         return answer;
     }
@@ -200,7 +197,18 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public int compareTo(Fraction o) {
-        return 0;
+        int answer = 0; // answer set to '0' to account for comparing equal Fractions
+
+        FractionImpl compMe = new FractionImpl(o.toString());
+        int a = this.numerator; int b = this.denominator;
+        int c = compMe.numerator; int d = compMe.denominator;
+
+        int compFac = (a*d - b*c); // algorithm to generate an integer reflecting the comparison of the two Fractions
+
+        if (compFac > 0) answer = 1; // answer set to positive 1 if 'this' is greater than 'o'
+        else if (compFac < 0) answer = -1;// answer set to negative 1 if 'o' is greater than 'this'
+
+        return answer;
     }
 
     /**
@@ -211,21 +219,8 @@ public class FractionImpl implements Fraction {
         String numeratorStr = String.valueOf(numerator);
         String denominatorStr = String.valueOf(denominator);
 
-        if (this.denominator == 1){
-            return numeratorStr;
-        }
-        else if (this.numerator == 0){
-            return numeratorStr + "0/1";
-        }
-        else {
-            return numeratorStr + "/" + denominatorStr;
-        }
+        if (this.denominator == 1) return numeratorStr;
+        else return numeratorStr + "/" + denominatorStr;
     }
 
-//    public static void main(String[] args) {
-//        Fraction multFrac3 = new FractionImpl(-1,2);
-//        Fraction multFrac4 = new FractionImpl(1,2);
-//        Fraction multResult2 = multFrac3.multiply(multFrac4);
-//        System.out.println(multResult2.toString());
-//    }
 }
