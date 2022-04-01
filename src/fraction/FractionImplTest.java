@@ -5,33 +5,22 @@ import org.junit.Test;
 import org.junit.Assert.*;
 import org.junit.jupiter.api.function.Executable;
 
-import static fraction.FractionImpl.getGCD;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class FractionImplTest {
-
-    // Tests the static method for obtaining the greatest common divisor used to normalise the fraction.
-    @Test
-    public void testGetGCD (){
-        int GCD1 = getGCD(1,2);
-        assertEquals(GCD1, 1);
-        int GCD2 = getGCD(3,6);
-        assertEquals(GCD2, 3);
-        int GCD3 = getGCD(3,6);
-        assertNotEquals(GCD3, 2);
-        int GCD4 = getGCD(8,-12);
-        assertEquals(GCD4, 4);
-    }
 
     @Test (expected = ArithmeticException.class) // Tests the first constructor will return an ArithmeticException when provided with a zero denominator value.
     public void testFraction1(){
         Fraction const1Frac1 = new FractionImpl(1,0);
     }
     @Test (expected = NumberFormatException.class) // Tests the third constructor will return an ArithmeticException when provided with too many numeric values.
-    public void testFraction3() {
+    public void testFraction2() {
         Fraction const3Frac1 = new FractionImpl( "1 0 / -4" );
+    }
+    @Test (expected = ArithmeticException.class) // Tests the first constructor will return an ArithmeticException when provided with a zero denominator value.
+    public void testFraction3(){
+        Fraction const3Frac2 = new FractionImpl("5/0");
     }
 
     // Tests for the toString method.
@@ -65,6 +54,16 @@ public class FractionImplTest {
     public void testToString6() { // Testing the third constructor with a whole number
         Fraction toStringFrac6 = new FractionImpl("5");
         assertEquals(toStringFrac6.toString(), "5");
+    }
+    @Test
+    public void testToString7() { // Testing the third constructor with a fraction that requires normalising
+        Fraction toStringFrac7 = new FractionImpl("5/10");
+        assertEquals(toStringFrac7.toString(), "1/2");
+    }
+    @Test
+    public void testToString8() { // Testing the third constructor with a fraction that results in 0
+        Fraction toStringFrac8 = new FractionImpl("0/5");
+        assertEquals(toStringFrac8.toString(), "0");
     }
 
     // Tests for the add method
@@ -217,5 +216,78 @@ public class FractionImplTest {
         Fraction divFrac12 = new FractionImpl(1, 2);
         Fraction divResult6 = divFrac11.divide(divFrac12);
         assertEquals(divResult6.toString(), "-1");
+    }
+
+    // Tests for abs method
+
+    @Test
+    public void testAbs1() { // Testing fraction absolute value with a negative denominator
+        Fraction absFrac1 = new FractionImpl(1, -2);
+        assertEquals(absFrac1.abs().toString(), "1/2");
+    }
+    @Test
+    public void testAbs2() { // Testing fraction absolute value with a negative numerator
+        Fraction absFrac2 = new FractionImpl(-1, 2);
+        assertEquals(absFrac2.abs().toString(), "1/2");
+    }
+    @Test
+    public void testAbs3() { // Testing fraction absolute value with a negative numerator that requires normalisation
+        Fraction absFrac3 = new FractionImpl(-2, 4);
+        assertEquals(absFrac3.abs().toString(), "1/2");
+    }
+    @Test
+    public void testAbs4() { // Testing fraction absolute value with a negative numerator and denominator that requires normalisation
+        Fraction absFrac4 = new FractionImpl(-2, -4);
+        assertEquals(absFrac4.abs().toString(), "1/2");
+    }
+
+    // Tests for negate method
+
+    @Test
+    public void testNegate1() { // Testing simple fraction negation
+        Fraction negFrac1 = new FractionImpl(1, 2);
+        assertEquals(negFrac1.negate().toString(), "-1/2");
+    }
+    @Test
+    public void testNegate2() { // Testing fraction negation starting with a negative fraction
+        Fraction negFrac2 = new FractionImpl(-1, 2);
+        assertEquals(negFrac2.negate().toString(), "1/2");
+    }
+    @Test
+    public void testNegate3() { // Testing fraction negation starting with a negative fraction
+        Fraction negFrac3 = new FractionImpl(-1, -2);
+        assertEquals(negFrac3.negate().toString(), "-1/2");
+    }
+    @Test
+    public void testNegate4() { // Testing fraction negation starting with a negative denominator
+        Fraction negFrac4 = new FractionImpl(1, -2);
+        assertEquals(negFrac4.negate().toString(), "1/2");
+    }
+
+    // Tests for inverse method
+
+    @Test
+    public void testInverse1() { // Testing simple fraction inversion
+        Fraction invFrac1 = new FractionImpl(3, 4);
+        assertEquals(invFrac1.inverse().toString(), "4/3");
+    }
+    @Test
+    public void testInverse2() { // Testing fraction inversion that returns a whole number
+        Fraction invFrac2 = new FractionImpl(1, 2);
+        assertEquals(invFrac2.inverse().toString(), "2");
+    }
+    @Test
+    public void testInverse3() { // Testing fraction inversion that returns a negative whole number
+        Fraction invFrac3 = new FractionImpl(-1, 2);
+        assertEquals(invFrac3.inverse().toString(), "-2");
+    }
+
+    // Tests for equals method
+
+    @Test
+    public void testEquals1() { // Testing simple fraction equality
+        Fraction eqlFrac1 = new FractionImpl(3, 4);
+        Fraction eqlFrac2 = new FractionImpl(3, 4);
+        assertTrue(eqlFrac1.equals(eqlFrac2));
     }
 }

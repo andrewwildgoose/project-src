@@ -23,17 +23,7 @@ public class FractionImpl implements Fraction {
         if (denominator == 0){
             throw new ArithmeticException("divide by zero");
         }
-
-        int GCD = getGCD(numerator, denominator);
-
-        if (denominator < 0){
-            this.numerator = numerator/(GCD*-1);
-            this.denominator = denominator/(GCD*-1);
-        }
-        else{
-            this.numerator = numerator/GCD;
-            this.denominator = denominator/GCD;
-        }
+        this.normalise(numerator, denominator);
     }
 
     /**
@@ -42,7 +32,6 @@ public class FractionImpl implements Fraction {
      * @param wholeNumber representing the numerator
      */
     public FractionImpl(int wholeNumber) {
-
         this.numerator = wholeNumber;
         this.denominator = 1;
     }
@@ -58,19 +47,22 @@ public class FractionImpl implements Fraction {
      *
      * @param fraction the string representation of the fraction
      */
-    public FractionImpl(String fraction) throws NumberFormatException {
-
+    public FractionImpl(String fraction) throws NumberFormatException, ArithmeticException {
         String str = fraction.replaceAll("[^-?0-9]+", " "); // replaces all non numeric characters (and "-" signs) in the string with a space.
         List<String> nums = Arrays.asList(str.trim().split(" ")); // splits the new numeric string to a List
 
         if (nums.size() > 2) { // throws an exception if too many numbers have been found.
             throw new NumberFormatException("too many numbers");
         }
-        if (nums.size() == 2) {
-            this.numerator = Integer.parseInt(nums.get(0));
-            this.denominator = Integer.parseInt(nums.get(1));
+        if (nums.size() == 2) {// create a normalised fraction
+            int numerator = Integer.parseInt(nums.get(0));
+            int denominator = Integer.parseInt(nums.get(1));
+            if (denominator == 0){
+                throw new ArithmeticException("divide by zero");
+            }
+            this.normalise(numerator, denominator);
         }
-        if (nums.size() == 1) {
+        if (nums.size() == 1) { // create fraction with denominator of 1 if a whole number has been received
             this.numerator = Integer.parseInt(nums.get(0));
             this.denominator = 1;
         }
@@ -78,9 +70,23 @@ public class FractionImpl implements Fraction {
     }
 
     // method used to find the greatest common divisor which will be used to normalise the fraction.
-    public static int getGCD(int numerator, int denominator){
+    private static int getGCD(int numerator, int denominator){
         if (denominator==0) return Math.abs(numerator);
         return getGCD(denominator,numerator%denominator);
+    }
+
+    // method used to normalise fractions in the first and third constructors
+    private void normalise(int numerator, int denominator){
+        int GCD = getGCD(numerator, denominator);
+
+        if (denominator < 0){
+            this.numerator = numerator/(GCD*-1);
+            this.denominator = denominator/(GCD*-1);
+        }
+        else{
+            this.numerator = numerator/GCD;
+            this.denominator = denominator/GCD;
+        }
     }
 
     /**
@@ -140,7 +146,7 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction abs() {
-        return null;
+        return new FractionImpl(Math.abs(this.numerator), Math.abs(this.denominator));
     }
 
     /**
@@ -148,7 +154,9 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction negate() {
-        return null;
+        int numerator = this.numerator * -1;
+        int denominator = this.denominator;
+        return new FractionImpl(numerator,denominator);
     }
 
     /**
@@ -164,7 +172,11 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        boolean answer = false;
+        if (obj instanceof Fraction f){
+            answer = super.equals(f);
+        }
+        return answer;
     }
 
     /**
@@ -180,7 +192,7 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction inverse() {
-        return null;
+        return new FractionImpl(this.denominator, this.numerator);
     }
 
     /**
@@ -203,7 +215,7 @@ public class FractionImpl implements Fraction {
             return numeratorStr;
         }
         else if (this.numerator == 0){
-            return numeratorStr;
+            return numeratorStr + "0/1";
         }
         else {
             return numeratorStr + "/" + denominatorStr;
