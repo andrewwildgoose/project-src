@@ -1,3 +1,6 @@
+// 13717321
+// awildg01@student.bbk.ac.uk
+
 package fraction;
 
 import java.util.Arrays;
@@ -69,13 +72,13 @@ public class FractionImpl implements Fraction {
 
     }
 
-    // method used to find the greatest common divisor which will be used to normalise the fraction.
+    // returns an int of the greatest common divisor which will be used to normalise the fraction.
     private static int getGCD(int numerator, int denominator){
         if (denominator==0) return Math.abs(numerator);
         return getGCD(denominator,numerator%denominator);
     }
 
-    // method used to normalise fractions in the first and third constructors
+    // void method used to normalise fractions in the first and third constructors
     private void normalise(int numerator, int denominator){
         int GCD = getGCD(numerator, denominator);
 
@@ -92,7 +95,9 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction add(Fraction f) {
+        // implement new FractionImpl obj to allow access to numerator and denominator.
         FractionImpl addMe = new FractionImpl(f.toString());
+        // assign short variable names to improve readability of the calculation
         int a = this.numerator; int b = this.denominator;
         int c = addMe.numerator; int d = addMe.denominator;
 
@@ -104,7 +109,9 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction subtract(Fraction f) {
+        // implement new FractionImpl obj to allow access to numerator and denominator.
         FractionImpl takeMe = new FractionImpl(f.toString());
+        // assign short variable names to improve readability of the calculation
         int a = this.numerator; int b = this.denominator;
         int c = takeMe.numerator; int d = takeMe.denominator;
 
@@ -116,7 +123,9 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction multiply(Fraction f) {
+        // implement new FractionImpl obj to allow access to numerator and denominator.
         FractionImpl multMe = new FractionImpl(f.toString());
+        // assign short variable names to improve readability of the calculation
         int a = this.numerator; int b = this.denominator;
         int c = multMe.numerator; int d = multMe.denominator;
 
@@ -128,7 +137,9 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction divide(Fraction f) {
+        // implement new FractionImpl obj to allow access to numerator and denominator.
         FractionImpl divMe = new FractionImpl(f.toString());
+        // assign short variable names to improve readability of the calculation
         int a = this.numerator; int b = this.denominator;
         int c = divMe.numerator; int d = divMe.denominator;
 
@@ -168,6 +179,7 @@ public class FractionImpl implements Fraction {
     public boolean equals(Object obj) {
         boolean answer = false;
         if (obj instanceof Fraction f){
+            // implement new FractionImpl obj to allow access to numerator and denominator.
             FractionImpl eqlMe = new FractionImpl(f.toString());
             if (this.numerator == eqlMe.numerator && this.denominator == eqlMe.denominator){
                 answer = true;

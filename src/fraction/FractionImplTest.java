@@ -1,3 +1,6 @@
+// 13717321
+// awildg01@student.bbk.ac.uk
+
 package fraction;
 
 import org.junit.Test;
@@ -19,7 +22,7 @@ public class FractionImplTest {
         Fraction const3Frac2 = new FractionImpl("5/0");
     }
 
-    // Tests for the toString method.
+    // Tests for the toString method, the different constructors, the normalise and the GCD methods.
 
     @Test
     public void testToString1(){ // Testing the first constructor with a simple fraction
